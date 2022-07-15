@@ -31,30 +31,54 @@ moneyBoxAna(5);
 
 function productos() {
     let agregarCarrito = [];
-
+    
     function agregarProducto(producto) {
-        agregarCarrito.push(producto);
+        let valorProducto = Number((Math.random()*10).toFixed(2));
+        agregarCarrito.push({
+            producto: producto,
+            valor: valorProducto,
+        });
     }
+
     function eliminarProducto(producto){
-        agregarCarrito.splice(agregarCarrito.findIndex((index) => index === producto), 1);
+        const productoEliminado = agregarCarrito.find((value) => value.producto == producto);
+        console.log(`Eliminaste '${productoEliminado.producto}' del carrito`);
+        agregarCarrito.splice(agregarCarrito.findIndex(index => index.producto === producto), 1);
+        total();
     }
+
     function mostrarProductos(){
-        console.log(agregarCarrito);
+        console.log(agregarCarrito.map((value) => `${value.producto}: $${value.valor}`));
     }
+
+    function total(){
+        let totalProductos = (agregarCarrito.reduce((sum, values) => sum + values.valor, 0)).toFixed(2);
+        console.log(`El total del carrito es: $${totalProductos}`);
+        console.log('');
+    }
+
     return {
         agregarProducto,
         eliminarProducto,
         mostrarProductos,
+        total,
     };
 }
 
 const carrito = productos();
-carrito.agregarProducto('Galleta');
+
+carrito.agregarProducto('Galletas');
 carrito.agregarProducto('Chocolate');
 carrito.agregarProducto('Avena');
 carrito.agregarProducto('Leche');
 carrito.agregarProducto('Azúcar');
 carrito.mostrarProductos();
+carrito.total();
+
 carrito.eliminarProducto('Chocolate');
 carrito.eliminarProducto('Leche');
 carrito.mostrarProductos();
+
+carrito.agregarProducto('Arroz');
+carrito.mostrarProductos();
+carrito.total();
